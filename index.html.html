@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Day Surprise</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f8c9d0;
+            color: white;
+            transition: all 0.3s ease-in-out;
+            flex-direction: column;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            opacity: 1;
+            transition: opacity 1s ease-in-out;
+        }
+
+        #yesButton, #noButton {
+            font-size: 1.5em;
+            padding: 15px 30px;
+            margin: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            border-radius: 10px;
+        }
+
+        #yesButton {
+            background-color: #ff5c8d;
+        }
+
+        #noButton {
+            background-color: #d3d3d3;
+        }
+
+        #yesButton.clicked {
+            display: none;
+        }
+
+        .grow-button {
+            transition: all 0.1s ease-in-out;
+            transform: scale(1.5);
+        }
+
+        .full-screen {
+            display: none;
+            font-size: 5em;
+        }
+
+        .show-love {
+            display: none;
+            font-size: 2em;
+            color: #ff5c8d;
+            animation: fadeIn 2s forwards;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            #yesButton, #noButton {
+                font-size: 1.2em;
+                padding: 10px 20px;
+            }
+        }
+
+        footer {
+            position: fixed;
+            bottom: 10px;
+            width: 100%;
+            text-align: center;
+            font-size: 1.2em;
+            color: #ff5c8d;
+            background-color: #222;
+            padding: 10px;
+            border-top: 2px solid #ff5c8d;
+        }
+
+        footer a {
+            color: #ff5c8d;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="question">Will you be my Valentine?</h1>
+        <button id="yesButton" onclick="showLove()">Yes</button>
+        <button id="noButton" onclick="growYesButton()">No</button>
+        <div class="show-love" id="loveMessage">I love you too!</div>
+        <div class="full-screen" id="fullScreenMessage">Yes, I love you too!</div>
+    </div>
+
+        <footer>
+            <p><a href="https://jeevanfolio.vercel.app" target="_blank">Made with love</a></p>
+        </footer>
+
+
+    <script>
+        let noClickCount = 0;
+
+        function showLove() {
+            // Hide the question and buttons with animation
+            const question = document.getElementById("question");
+            question.style.opacity = "0"; // Fade out the question
+            question.style.transform = "translateY(-20px)"; // Optional: make it move up a little
+
+            // Hide the buttons
+            document.getElementById("yesButton").style.display = "none";
+            document.getElementById("noButton").style.display = "none";
+
+            // Display the "I love you too" message
+            document.getElementById("loveMessage").style.display = "block";
+        }
+
+        function growYesButton() {
+            const yesButton = document.getElementById("yesButton");
+            const noButton = document.getElementById("noButton");
+            noClickCount++;
+
+            // Increase button size incrementally each time "No" is clicked
+            const newSize = 1 + (noClickCount * 0.1); // Increase size by 10% each time
+            yesButton.style.transform = `scale(${newSize})`;
+
+            // Move the "No" button to the right incrementally
+            const newTranslateX = noClickCount * 20; // Move 20px more each time
+            noButton.style.transform = `translateX(${newTranslateX}px)`;
+
+            setTimeout(() => {
+                if (yesButton.offsetWidth < window.innerWidth && yesButton.offsetHeight < window.innerHeight) {
+                    yesButton.style.fontSize = `${1.5 + noClickCount * 0.2}em`;
+                    yesButton.style.padding = `${15 + noClickCount * 5}px ${30 + noClickCount * 10}px`;
+                } else {
+                    yesButton.classList.add("full-screen");
+                    document.getElementById("fullScreenMessage").style.display = "block";
+                }
+            }, 100);
+        }
+    </script>
+</body>
+</html>
